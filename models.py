@@ -10,9 +10,11 @@ import math
 
 try:
     from utils.syncbn import SyncBN
-    batch_norm=SyncBN #nn.BatchNorm2d
+    batch_norm=SyncBN
+    print('import SyncBn success')
 except ImportError:
     batch_norm=nn.BatchNorm2d
+    print('import SyncBn fail')
 
 def create_modules(module_defs):
     """
@@ -291,7 +293,7 @@ def shift_tensor_vertically(t, delta):
 
 def create_grids(self, img_size, nGh, nGw):
     self.stride = img_size[0]/nGw
-    assert self.stride == img_size[1] / nGh, \
+    assert math.floor(self.stride) == math.floor(img_size[1] / nGh), \
             "{} v.s. {}/{}".format(self.stride, img_size[1], nGh)
 
     # build xy offsets

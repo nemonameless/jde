@@ -157,8 +157,8 @@ def train(
                       'model': model.module.state_dict(),
                       'optimizer': optimizer.state_dict()}
 
-        copyfile(cfg, weights_to + '/cfg/yolo3.cfg')
-        copyfile(data_cfg, weights_to + '/cfg/ccmcpe.json')
+        copyfile(cfg, weights_to + '/yolo3.cfg')
+        copyfile(data_cfg, weights_to + '/ccmcpe.json')
 
         latest = osp.join(weights_to, 'latest.pt')
         torch.save(checkpoint, latest)
@@ -170,10 +170,10 @@ def train(
         # Calculate mAP
         if epoch % opt.test_interval == 0:
             with torch.no_grad():
-                mAP, R, P = test.test(cfg, data_cfg, weights=latest, batch_size=batch_size, img_size=img_size,
-                                      print_interval=40, nID=dataset.nID)
-                test.test_emb(cfg, data_cfg, weights=latest, batch_size=batch_size, img_size=img_size,
-                              print_interval=40, nID=dataset.nID)
+                mAP, R, P = test.test(cfg, data_cfg, weights=latest, batch_size=batch_size,
+                                      print_interval=40)
+                test.test_emb(cfg, data_cfg, weights=latest, batch_size=batch_size,
+                              print_interval=40)
 
         # Call scheduler.step() after opimizer.step() with pytorch > 1.1.0
         scheduler.step()

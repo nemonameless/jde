@@ -179,31 +179,54 @@ if __name__ == '__main__':
     parser.add_argument('--nms-thres', type=float, default=0.4, help='iou threshold for non-maximum suppression')
     parser.add_argument('--min-box-area', type=float, default=200, help='filter out tiny boxes')
     parser.add_argument('--track-buffer', type=int, default=30, help='tracking buffer')
-    parser.add_argument('--test-mot16', action='store_true', help='tracking buffer')
+
+    # tracking data
+    parser.add_argument('--val_mot16', default=True, help='val mot16')
+    parser.add_argument('--test_mot16', default=False, help='test mot16')
+    parser.add_argument('--val_mot17', default=False, help='val mot17')
+    parser.add_argument('--test_mot17', default=False, help='test mot17')
+
     parser.add_argument('--save-images', action='store_true', help='save tracking results (image)')
     parser.add_argument('--save-videos', action='store_true', help='save tracking results (video)')
     opt = parser.parse_args()
     print(opt, end='\n\n')
  
-    if not opt.test_mot16:
+    if opt.val_mot16:
+        seqs_str = '''MOT16-02
+                      MOT16-04
+                      MOT16-05
+                      MOT16-09
+                      MOT16-10
+                      MOT16-11
+                      MOT16-13'''
+        data_root = './dataset/mot/MOT16/images/train'
+    if opt.val_mot17:
         seqs_str = '''MOT17-02-SDP
                       MOT17-04-SDP
                       MOT17-05-SDP
                       MOT17-09-SDP
                       MOT17-10-SDP
                       MOT17-11-SDP
-                      MOT17-13-SDP
-                    '''
-        data_root = '/home/wangzd/datasets/MOT/MOT17/images/train'
-    else:
+                      MOT17-13-SDP'''
+        data_root = './dataset/mot/MOT17/images/train'
+    if opt.test_mot16:
         seqs_str = '''MOT16-01
-                     MOT16-03
-                     MOT16-06
-                     MOT16-07
-                     MOT16-08
-                     MOT16-12
-                     MOT16-14'''
-        data_root = '/home/wangzd/datasets/MOT/MOT16/images/test'
+                      MOT16-03
+                      MOT16-06
+                      MOT16-07
+                      MOT16-08
+                      MOT16-12
+                      MOT16-14'''
+        data_root = './dataset/mot/MOT16/images/test'
+    if opt.test_mot17:
+        seqs_str = '''MOT17-01-SDP
+                      MOT17-03-SDP
+                      MOT17-06-SDP
+                      MOT17-07-SDP
+                      MOT17-08-SDP
+                      MOT17-12-SDP
+                      MOT17-14-SDP'''
+        data_root = './dataset/mot/MOT17/images/test'
     seqs = [seq.strip() for seq in seqs_str.split()]
 
     main(opt,
