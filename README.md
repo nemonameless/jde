@@ -13,8 +13,12 @@ This repo is the a codebase of the Joint Detection and Embedding (JDE) model. JD
 We hope this repo will help researches/engineers to develop more practical MOT systems. For algorithm development, we provide training data, baseline models and evaluation methods to make a level playground. For application usage, we also provide a small video demo that takes raw videos as input without any bells and whistles.
 
 ## Requirements
-* Python 3.6
-* [Pytorch](https://pytorch.org) >= 1.2.0 
+```
+pip install torch==1.9.1+cu102 -f https://download.pytorch.org/whl/torch_stable.html
+pip install torchvision==0.10.1+cu102 -f https://download.pytorch.org/whl/torch_stable.html
+```
+* Python 3.8
+* [Pytorch](https://pytorch.org) =1.9.1
 * python-opencv
 * [py-motmetrics](https://github.com/cheind/py-motmetrics) (`pip install motmetrics`)
 * cython-bbox (`pip install cython_bbox`)
