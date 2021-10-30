@@ -1,0 +1,7 @@
+motmetrics
+cython_bbox
+opencv-python
+sklearn
+numba
+
+
