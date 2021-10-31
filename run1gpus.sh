@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./cfg/yolov3_1088x608.cfg
