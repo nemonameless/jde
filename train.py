@@ -182,7 +182,7 @@ def train(
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--epochs', type=int, default=30, help='number of epochs')
-    parser.add_argument('--batch-size', type=int, default=32, help='size of each image batch')
+    parser.add_argument('--batch-size', type=int, default=4, help='size of each image batch')
     parser.add_argument('--accumulated-batches', type=int, default=1, help='number of batches before optimizer step')
     parser.add_argument('--cfg', type=str, default='cfg/yolov3.cfg', help='cfg file path')
     parser.add_argument('--weights-from', type=str, default='weights/',
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     parser.add_argument('--data-cfg', type=str, default='cfg/ccmcpe.json', help='coco.data file path')
     parser.add_argument('--img-size', type=int, default=[1088, 608], nargs='+', help='pixels')
     parser.add_argument('--resume', action='store_true', help='resume training flag')
-    parser.add_argument('--print-interval', type=int, default=40, help='print interval')
+    parser.add_argument('--print-interval', type=int, default=5, help='print interval')
     parser.add_argument('--test-interval', type=int, default=9, help='test interval')
     parser.add_argument('--lr', type=float, default=1e-2, help='init lr')
     parser.add_argument('--unfreeze-bn', action='store_true', help='unfreeze bn')

@@ -2,22 +2,22 @@
     "root":"./dataset/mot",
     "train":
     {
-        "mot17":"./data/mot17.train",
-        "caltech":"./data/caltech.train",
-        "citypersons":"./data/citypersons.train",
-        "cuhksysu":"./data/cuhksysu.train",
-        "prw":"./data/prw.train",
-        "eth":"./data/eth.train"
+        "mot17":"./dataset/mot/image_lists/mot17.train",
+        "caltech":"./dataset/mot/image_lists/caltech.all",
+        "citypersons":"./dataset/mot/image_lists/citypersons.train",
+        "cuhksysu":"./dataset/mot/image_lists/cuhksysu.train",
+        "prw":"./dataset/mot/image_lists/prw.train",
+        "eth":"./dataset/mot/image_lists/eth.train"
     },
     "test_emb":
     {
-        "caltech":"./data/caltech.10k.val",
-        "cuhksysu":"./data/cuhksysu.val",
-        "prw":"./data/prw.val"
+        "caltech":"./dataset/mot/image_lists/caltech.10k.val",
+        "cuhksysu":"./dataset/mot/image_lists/cuhksysu.val",
+        "prw":"./dataset/mot/image_lists/prw.val"
     },
     "test":
     {
-        "caltech":"./data/caltech.val",
-        "citypersons":"./data/citypersons.val"
+        "caltech":"./dataset/mot/image_lists/caltech.val",
+        "citypersons":"./dataset/mot/image_lists/citypersons.val"
     }
 }
