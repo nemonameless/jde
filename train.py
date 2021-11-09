@@ -148,6 +148,7 @@ def train(
                 rloss['box'], rloss['conf'],
                 rloss['id'], rloss['loss'],
                 rloss['nT'], time.time() - t0)
+            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], time.time()-t0, int(rloss['nT']))
             t0 = time.time()
             if i % opt.print_interval == 0:
                 logger.info(s)
@@ -168,13 +169,15 @@ def train(
             torch.save(checkpoint, osp.join(weights_to, "weights_epoch_" + str(epoch) + ".pt"))
 
         # Calculate mAP
+        '''
+        # no need to eval 
         if epoch % opt.test_interval == 0:
             with torch.no_grad():
                 mAP, R, P = test.test(cfg, data_cfg, weights=latest, batch_size=batch_size,
                                       print_interval=40)
                 test.test_emb(cfg, data_cfg, weights=latest, batch_size=batch_size,
                               print_interval=40)
-
+        '''
         # Call scheduler.step() after opimizer.step() with pytorch > 1.1.0
         scheduler.step()
 
