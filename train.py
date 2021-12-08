@@ -171,7 +171,7 @@ def train(
                 rloss['id'], rloss['loss'],
                 rloss['nT'], time.time() - t0)
             '''
-            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], batch_time.avg, int(rloss['nT']))
+            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {} ips: {:.3f}'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], batch_time.avg, int(rloss['nT']), batch_size/batch_time.avg)
             t0 = time.time()
             if i % opt.print_interval == 0:
                 logger.info(s)
