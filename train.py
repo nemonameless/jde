@@ -11,6 +11,25 @@ from utils.log import logger
 from torchvision.transforms import transforms as T
 
 
+class AverageMeter(object):
+    """Computes and stores the average and current value"""
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
+
+    def update(self, val, n=1):
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        if self.count > 0:
+          self.avg = self.sum / self.count
+
+
 def train(
         cfg,
         data_cfg,
@@ -23,8 +42,7 @@ def train(
         batch_size=16,
         accumulated_batches=1,
         freeze_backbone=False,
-        opt=None,
-):
+        opt=None):
     # The function starts
 
     timme = strftime("%Y-%d-%m %H:%M:%S", gmtime())
@@ -97,6 +115,7 @@ def train(
         for i, (name, p) in enumerate(model.named_parameters()):
             p.requires_grad = False if 'batch_norm' in name else True
 
+    batch_time = AverageMeter()
     # model_info(model)
     t0 = time.time()
     for epoch in range(epochs):
@@ -141,14 +160,18 @@ def train(
             for ii, key in enumerate(model.module.loss_names):
                 rloss[key] = (rloss[key] * ui + components[ii]) / (ui + 1)
 
+            batch_time.update(time.time() - t0)
+
             # rloss indicates running loss values with mean updated at every epoch
+            '''
             s = ('%8s%12s' + '%10.3g' * 6) % (
                 '%g/%g' % (epoch, epochs - 1),
                 '%g/%g' % (i, len(dataloader) - 1),
                 rloss['box'], rloss['conf'],
                 rloss['id'], rloss['loss'],
                 rloss['nT'], time.time() - t0)
-            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], time.time()-t0, int(rloss['nT']))
+            '''
+            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], batch_time.avg, int(rloss['nT']))
             t0 = time.time()
             if i % opt.print_interval == 0:
                 logger.info(s)
