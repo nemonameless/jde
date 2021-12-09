@@ -116,7 +116,9 @@ def train(
             p.requires_grad = False if 'batch_norm' in name else True
 
     batch_time = AverageMeter()
+    data_time = AverageMeter()
     # model_info(model)
+
     t0 = time.time()
     for epoch in range(epochs):
         epoch += start_epoch
@@ -132,7 +134,9 @@ def train(
         ui = -1
         rloss = defaultdict(float)  # running loss
         optimizer.zero_grad()
+        iter_tic = time.time() ###
         for i, (imgs, targets, _, _, targets_len) in enumerate(dataloader):
+            data_time.update(time.time() - iter_tic) ###
             if sum([len(x) for x in targets]) < 1:  # if no targets continue
                 continue
 
@@ -160,21 +164,26 @@ def train(
             for ii, key in enumerate(model.module.loss_names):
                 rloss[key] = (rloss[key] * ui + components[ii]) / (ui + 1)
 
-            batch_time.update(time.time() - t0)
+            # batch_time.update(time.time() - t0) #
+            batch_time.update(time.time() - iter_tic) ###
 
             # rloss indicates running loss values with mean updated at every epoch
-            '''
+            
             s = ('%8s%12s' + '%10.3g' * 6) % (
                 '%g/%g' % (epoch, epochs - 1),
                 '%g/%g' % (i, len(dataloader) - 1),
                 rloss['box'], rloss['conf'],
                 rloss['id'], rloss['loss'],
                 rloss['nT'], time.time() - t0)
-            '''
-            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {} ips: {:.3f}'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], batch_time.avg, int(rloss['nT']), batch_size/batch_time.avg)
-            t0 = time.time()
+            
+            # print( "Batch: {} time: {:.5f}".format(i, time.time()-t0))
+            # s = 'Epoch: {} Batch: {}/{} avg_batch_cost: {:.5f} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, avg_batch_cost, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], avg_batch_cost, int(rloss['nT']))
+            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} nT: {} data_time: {:.3f}s batch_time: {:.3f}s ips: {:.3f}'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], int(rloss['nT']), data_time.avg, batch_time.avg, batch_size/batch_time.avg)
+            # t0 = time.time()
             if i % opt.print_interval == 0:
                 logger.info(s)
+            
+            iter_tic = time.time() ###
 
         # Save latest checkpoint
         checkpoint = {'epoch': epoch,
