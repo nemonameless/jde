@@ -178,7 +178,7 @@ def train(
             '''
             # print( "Batch: {} time: {:.5f}".format(i, time.time()-t0))
             # s = 'Epoch: {} Batch: {}/{} avg_batch_cost: {:.5f} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} time: {:.3f}s nT: {}\n'.format(epoch, i, len(dataloader)-1, avg_batch_cost, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], avg_batch_cost, int(rloss['nT']))
-            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} nT: {} data_time: {:.3f}s batch_time: {:.3f}s ips: {:.3f}'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], int(rloss['nT']), data_time.avg, batch_time.avg, batch_size/batch_time.avg)
+            s = 'Epoch: {} Batch: {}/{} loss_bbox: {:.3f} loss_conf: {:.3f} loss_id: {:.3f} loss_total: {:.3f} nT: {} datatime: {:.3f}s batch time: {:.3f}s ips: {:.3f}'.format(epoch, i, len(dataloader)-1, rloss['box'], rloss['conf'], rloss['id'], rloss['loss'], int(rloss['nT']), data_time.avg, batch_time.avg, batch_size/batch_time.avg)
             # t0 = time.time()
             if i % opt.print_interval == 0:
                 logger.info(s)
